@@ -8,6 +8,11 @@ namespace RubiconTest.Controllers
 {
     public class TagsController : Controller
     {
+
+
+        //GET /api/tags
+
+
         public IActionResult Index()
         {
             return View();

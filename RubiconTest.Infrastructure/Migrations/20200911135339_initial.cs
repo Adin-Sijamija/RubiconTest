@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace RubiconTest.Infrastructure.Ef.Migrations
+namespace RubiconTest.Infrastructure.Migrations
 {
-    public partial class _001 : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -29,18 +29,11 @@ namespace RubiconTest.Infrastructure.Ef.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: false),
-                    BlogSlug = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tags", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tags_Blogs_BlogSlug",
-                        column: x => x.BlogSlug,
-                        principalTable: "Blogs",
-                        principalColumn: "Slug",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,24 +51,19 @@ namespace RubiconTest.Infrastructure.Ef.Migrations
                         column: x => x.BlogSlug,
                         principalTable: "Blogs",
                         principalColumn: "Slug",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BlogTags_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BlogTags_TagId",
                 table: "BlogTags",
                 column: "TagId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tags_BlogSlug",
-                table: "Tags",
-                column: "BlogSlug");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -84,10 +72,10 @@ namespace RubiconTest.Infrastructure.Ef.Migrations
                 name: "BlogTags");
 
             migrationBuilder.DropTable(
-                name: "Tags");
+                name: "Blogs");
 
             migrationBuilder.DropTable(
-                name: "Blogs");
+                name: "Tags");
         }
     }
 }

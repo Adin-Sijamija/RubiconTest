@@ -12,5 +12,7 @@ namespace RubiconTest.Core.Entities
         [Required]
         public string Name { get; set; }
 
+        public List<BlogTag> BlogTags { get; set; }
+
     }
 }

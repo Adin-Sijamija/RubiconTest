@@ -26,7 +26,7 @@ namespace RubiconTest.Core.Entities
 
   
 
-        public IEnumerable<Tag> Tags { get; set; }
+        public List<BlogTag> BlogTags { get; set; }
 
     }
 }

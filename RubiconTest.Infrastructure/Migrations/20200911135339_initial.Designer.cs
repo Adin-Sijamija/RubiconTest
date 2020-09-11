@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RubiconTest.Infrastructure.EF;
 
-namespace RubiconTest.Infrastructure.Ef.Migrations
+namespace RubiconTest.Infrastructure.Migrations
 {
     [DbContext(typeof(RubiconContext))]
-    [Migration("20200911130038_001")]
-    partial class _001
+    [Migration("20200911135339_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,7 +56,7 @@ namespace RubiconTest.Infrastructure.Ef.Migrations
                     b.Property<string>("BlogSlug")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("TagId")
+                    b.Property<int>("TagId")
                         .HasColumnType("int");
 
                     b.HasKey("BlogSlug", "TagId");
@@ -73,16 +73,11 @@ namespace RubiconTest.Infrastructure.Ef.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("BlogSlug")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BlogSlug");
 
                     b.ToTable("Tags");
                 });
@@ -90,23 +85,16 @@ namespace RubiconTest.Infrastructure.Ef.Migrations
             modelBuilder.Entity("RubiconTest.Core.Entities.BlogTag", b =>
                 {
                     b.HasOne("RubiconTest.Core.Entities.Blog", "Blog")
-                        .WithMany()
+                        .WithMany("BlogTags")
                         .HasForeignKey("BlogSlug")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RubiconTest.Core.Entities.Tag", "Tag")
-                        .WithMany()
+                        .WithMany("BlogTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("RubiconTest.Core.Entities.Tag", b =>
-                {
-                    b.HasOne("RubiconTest.Core.Entities.Blog", null)
-                        .WithMany("Tags")
-                        .HasForeignKey("BlogSlug");
                 });
 #pragma warning restore 612, 618
         }

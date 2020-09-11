@@ -12,6 +12,10 @@ using Microsoft.Extensions.Logging;
 using RubiconTest.Infrastructure.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using RubiconTest.Infrastructure.Services.BlogService;
+using RubiconTest.Infrastructure.Services.TagService;
+using RubiconTest.Infrastructure;
+using AutoMapper;
 
 namespace RubiconTest
 {
@@ -30,7 +34,11 @@ namespace RubiconTest
             services.AddControllers();
 
             services.AddDbContext<RubiconContext>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+
+            services.AddScoped<IBlogService, BlogService>();
+            services.AddScoped<ITagService, TagService>();
             services.AddSwaggerGen();
 
         }
