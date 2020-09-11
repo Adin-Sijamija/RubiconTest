@@ -6,13 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RubiconTest.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class TagsController : Controller
     {
 
 
         //GET /api/tags
 
-
+        [HttpGet]
         public IActionResult Index()
         {
             return View();

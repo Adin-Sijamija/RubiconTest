@@ -20,10 +20,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="3.0.61" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RubiconTest.Core\RubiconTest.Core.csproj" />
+    <ProjectReference Include="..\RubiconTest.Infrastructure.Shared\RubiconTest.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
 </Project>

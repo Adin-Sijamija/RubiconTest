@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RubiconTest.Infrastructure.EF;
 
 namespace RubiconTest.Infrastructure.Migrations
 {
     [DbContext(typeof(RubiconContext))]
-    partial class RubiconContextModelSnapshot : ModelSnapshot
+    [Migration("20200911160526_CreatedDateFixing")]
+    partial class CreatedDateFixing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

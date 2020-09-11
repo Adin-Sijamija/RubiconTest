@@ -12,5 +12,7 @@ namespace RubiconTest.Infrastructure.Services.BlogService
         Task<BlogModel> GetBlog(string slug);
 
         Task<BlogModel> AddBlog(AddBlogModel model);
+
+        Task<BlogsModel> GetBlogs(string tag);
     }
 }

@@ -63,7 +63,6 @@ namespace RubiconTest
             });
 
 
-
             app.UseRouting();
 
             app.UseAuthorization();

@@ -18,9 +18,7 @@ namespace RubiconTest.Core.Entities
         public string Body { get; set; }
 
 
-        [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; }
-        [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime UpdatedAt { get; set; }
 
 
