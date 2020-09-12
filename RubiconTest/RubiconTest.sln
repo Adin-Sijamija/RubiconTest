@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RubiconTest.Core", "..\Rubi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RubiconTest_Integration", "..\RubiconTest_Integration\RubiconTest_Integration.csproj", "{3A2E42B0-88E5-425A-9E25-DC120CE2CE71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubiconTest.Infrastructure.Shared", "..\RubiconTest.Infrastructure.Shared\RubiconTest.Infrastructure.Shared.csproj", "{C09A5DA9-F465-4C44-9F88-6117982B6178}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RubiconTest.Infrastructure.Shared", "..\RubiconTest.Infrastructure.Shared\RubiconTest.Infrastructure.Shared.csproj", "{C09A5DA9-F465-4C44-9F88-6117982B6178}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RubiconTest_UnitTest", "..\RubiconTest_UnitTest\RubiconTest_UnitTest.csproj", "{1E4EEFA5-780A-455B-BC14-82D7E3A21546}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,12 +43,17 @@ Global
 		{C09A5DA9-F465-4C44-9F88-6117982B6178}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C09A5DA9-F465-4C44-9F88-6117982B6178}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C09A5DA9-F465-4C44-9F88-6117982B6178}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E4EEFA5-780A-455B-BC14-82D7E3A21546}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E4EEFA5-780A-455B-BC14-82D7E3A21546}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E4EEFA5-780A-455B-BC14-82D7E3A21546}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E4EEFA5-780A-455B-BC14-82D7E3A21546}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3A2E42B0-88E5-425A-9E25-DC120CE2CE71} = {C752EC96-6151-4A55-B652-149B5D13E4CB}
+		{1E4EEFA5-780A-455B-BC14-82D7E3A21546} = {C752EC96-6151-4A55-B652-149B5D13E4CB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B7C35B93-011D-41A7-BB21-EAF01354C440}

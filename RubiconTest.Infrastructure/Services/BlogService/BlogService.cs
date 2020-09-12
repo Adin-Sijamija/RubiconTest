@@ -33,7 +33,7 @@ namespace RubiconTest.Infrastructure.Services.BlogService
             List<string> tagNames = model.TagList;
 
             //Make sure that the title isn't taken already
-            var IsTaken = db.Blogs.AsNoTracking().SingleOrDefaultAsync(x => x.Slug == blog.Slug);
+            var IsTaken = await db.Blogs.AsNoTracking().SingleOrDefaultAsync(x => x.Slug == blog.Slug);
 
             if (IsTaken != null)
                 return null;
@@ -142,7 +142,9 @@ namespace RubiconTest.Infrastructure.Services.BlogService
         public async Task<BlogModel> UpdateBlog(UpdateBlogModel model)
         {
 
-            Blog exists = await db.Blogs.Include(x => x.BlogTags).ThenInclude(x => x.Tag).SingleOrDefaultAsync(x => x.Title == x.Title);
+            Blog exists = await db.Blogs.AsNoTracking().SingleOrDefaultAsync(x => x.Slug == model.Slug);
+
+
 
             if (exists == null)
                 return null;

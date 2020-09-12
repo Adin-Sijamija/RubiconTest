@@ -16,6 +16,7 @@ using RubiconTest.Infrastructure.Services.BlogService;
 using RubiconTest.Infrastructure.Services.TagService;
 using RubiconTest.Infrastructure;
 using AutoMapper;
+using Serilog;
 
 namespace RubiconTest
 {
@@ -62,7 +63,18 @@ namespace RubiconTest
                 c.RoutePrefix = string.Empty;
             });
 
+            //DataGeneration
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetService<RubiconContext>();
+                dbContext.Database.Migrate();
 
+                Seeder.SeedData(dbContext);
+
+            }
+
+
+            app.UseSerilogRequestLogging();
             app.UseRouting();
 
             app.UseAuthorization();

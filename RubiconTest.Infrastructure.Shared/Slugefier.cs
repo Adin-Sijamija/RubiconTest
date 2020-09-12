@@ -15,7 +15,7 @@ namespace RubiconTest.Infrastructure.Shared
        /// <returns></returns>
         public static string GetFriendlyTitle(string title, bool remapToAscii = true, int maxlength = 80)
         {
-            if (title == null)
+            if (string.IsNullOrEmpty(title) ||string.IsNullOrWhiteSpace(title))
             {
                 return string.Empty;
             }

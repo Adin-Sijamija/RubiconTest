@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using RubiconTest.Infrastructure.Services.BlogService;
 using RubiconTest.Infrastructure.Models;
+using Microsoft.Extensions.Logging;
 
 namespace RubiconTest.Controllers
 {
@@ -22,7 +23,6 @@ namespace RubiconTest.Controllers
 
 
 
-
         //GET /api/posts/:slug
         [Route("{slug?}")]
         [HttpGet]
@@ -34,7 +34,9 @@ namespace RubiconTest.Controllers
             //Ultimately I would have redirected this to a not found page that recommends
             //similar/random articles but considering you only want end points this also works
             if (result == null)
+            {
                 return NotFound(string.Format(@"The blog you are looking for: {0} ,can't be found, make sure you entered the url properly", slug));
+            }
 
 
             return Ok(result);
