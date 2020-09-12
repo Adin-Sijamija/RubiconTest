@@ -31,10 +31,10 @@ namespace RubiconTest.Controllers
 
             var result = await service.GetBlog(slug);
 
-            //Ultimatly I would have redirected this to a not found page that recommends
+            //Ultimately I would have redirected this to a not found page that recommends
             //similar/random articles but considering you only want end points this also works
             if (result == null)
-                return NotFound(string.Format(@"The blog you are looking for: {0} can't be found, make sure you entered the url properly", slug));
+                return NotFound(string.Format(@"The blog you are looking for: {0} ,can't be found, make sure you entered the url properly", slug));
 
 
             return Ok(result);
@@ -65,24 +65,48 @@ namespace RubiconTest.Controllers
                 return BadRequest(errors);
             }
 
-
             var result = await service.AddBlog(model);
+
+            if (result == null)
+            {
+                return BadRequest("Selected title already taken. Please change it to something else");
+            }
 
             return Ok(result);
         }
 
         //PUT /api/posts/:slug
         [HttpPut]
-        public async Task<string> UpdateBlog(string slug)
+        public async Task<IActionResult> UpdateBlog([FromBody] UpdateBlogModel model)
         {
-            return "";
+          
+
+            //Make sure we have something to update 
+            if (model.Body == null && model.Description == null && model.Title == null)
+                return BadRequest("Nothing to update!");
+
+            var result = await service.UpdateBlog(model);
+
+            if (result == null)
+                BadRequest("Selected title is already taken");
+
+
+            return Ok(result);
         }
 
         //DELETE /api/posts/:slug
         [HttpDelete]
-        public async Task<string> DeleteBlog(string slug)
+        [Route("{slug?}")]
+        public async Task<IActionResult> DeleteBlog([FromRoute] string slug)
         {
-            return "";
+
+            var result = await service.DeleteBlog(slug);
+
+            if (result == false)
+                return BadRequest(string.Format("Blog with the slug/url: {0} , does not exists",slug));
+
+
+            return Ok("Blog successfully deleted");
         }
 
 

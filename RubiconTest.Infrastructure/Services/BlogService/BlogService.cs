@@ -32,6 +32,13 @@ namespace RubiconTest.Infrastructure.Services.BlogService
             blog.Slug = Slugefier.GetFriendlyTitle(model.Title);
             List<string> tagNames = model.TagList;
 
+            //Make sure that the title isn't taken already
+            var IsTaken = db.Blogs.AsNoTracking().SingleOrDefaultAsync(x => x.Slug == blog.Slug);
+
+            if (IsTaken != null)
+                return null;
+
+
             await db.Blogs.AddAsync(blog);
             await db.SaveChangesAsync();
 
@@ -39,7 +46,7 @@ namespace RubiconTest.Infrastructure.Services.BlogService
             List<Tag> Tags = await db.Tags.AsNoTracking().ToListAsync();
             foreach (var tag in tagNames)
             {
-                //make sure each tag exsists 
+                //make sure each tag exists 
                 var exsists = Tags.FirstOrDefault(x => x.Name.ToLower().Trim() == tag.ToLower().Trim());
 
                 //If it exists add it otherwise skip it
@@ -51,7 +58,7 @@ namespace RubiconTest.Infrastructure.Services.BlogService
             }
 
             await db.BlogTags.BulkInsertAsync(ValidBlogTags);
-            await db.SaveChangesAsync();
+            await db.BulkSaveChangesAsync();
 
 
             //return the newly added blog with the updated navigation properties/tags
@@ -60,12 +67,31 @@ namespace RubiconTest.Infrastructure.Services.BlogService
 
         }
 
+        public async Task<bool> DeleteBlog(string slug)
+        {
+
+            //find the blog
+            Blog blog = await db.Blogs.Include(x=>x.BlogTags).FirstOrDefaultAsync(x => x.Slug == slug);
+
+            if (blog == null)
+                return false;
+
+            // bulk delete the many to many BlogTags instances first via BulkDelete
+            await db.BlogTags.BulkDeleteAsync(blog.BlogTags);
+            await db.SingleDeleteAsync(blog);
+            await db.BulkSaveChangesAsync();
+
+            return true;
+
+
+        }
+
         public async Task<BlogModel> GetBlog(string slug)
         {
 
             var result = Slugefier.GetFriendlyTitle(slug);
 
-            var exists = db.Blogs.SingleOrDefault(x => x.Slug == slug);
+            var exists = db.Blogs.AsNoTracking().Include(x => x.BlogTags).ThenInclude(x => x.Tag).SingleOrDefault(x => x.Slug == slug);
 
             //if its not found return null
             if (exists == null)
@@ -79,7 +105,7 @@ namespace RubiconTest.Infrastructure.Services.BlogService
         {
             if (string.IsNullOrEmpty(tag))
             {
-                //Mapp all blogs order by date with any tag
+                //Map all blogs order by date with any tag
                 List<BlogModel> blogModels = mapper.Map<List<BlogModel>>(await db.Blogs.AsNoTracking().Include(x=>x.BlogTags).ThenInclude(x=>x.Tag).OrderByDescending(x => x.UpdatedAt).ToListAsync());
 
                 return new BlogsModel() { blogs = blogModels, PostsCount = blogModels.Count };
@@ -92,7 +118,7 @@ namespace RubiconTest.Infrastructure.Services.BlogService
 
                 if (TagExists != null)
                 {
-                    //if it does exists mapp it to model
+                    //if it does exists map it to model
                     List<BlogModel> models = mapper.Map<List<BlogModel>>(await db.Blogs.AsNoTracking().Include(x => x.BlogTags).ThenInclude(x => x.Tag).Where(x => x.BlogTags.Where(y => y.Tag.Name == tag).Any()).OrderByDescending(x => x.UpdatedAt).ToListAsync());
 
                     return new BlogsModel() { blogs = models, PostsCount = models.Count };
@@ -100,7 +126,7 @@ namespace RubiconTest.Infrastructure.Services.BlogService
                 }
                 else
                 {
-                    //if it doesnt return a empty array with 0 count
+                    //if it doesn't return a empty array with 0 count
                     return new BlogsModel() { blogs = null, PostsCount = 0 };
 
                 }
@@ -113,8 +139,45 @@ namespace RubiconTest.Infrastructure.Services.BlogService
 
         }
 
+        public async Task<BlogModel> UpdateBlog(UpdateBlogModel model)
+        {
+
+            Blog exists = await db.Blogs.Include(x => x.BlogTags).ThenInclude(x => x.Tag).SingleOrDefaultAsync(x => x.Title == x.Title);
+
+            if (exists == null)
+                return null;
+
+            if (model.Body != null)
+                exists.Body = model.Body;
+
+            if (model.Description != null)
+                exists.Description = model.Description;
 
 
+            if (model.Title != null)
+            {
 
+                //make sure that the new title/slug isn't taken
+                var newSlug = Slugefier.GetFriendlyTitle(model.Title);
+
+                var taken = await db.Blogs.AsNoTracking().SingleOrDefaultAsync(x => x.Slug == newSlug);
+
+                if (taken != null)//id its taken return null so we can send BadRequest response
+                    return null;
+
+
+                exists.Title = model.Title;
+                exists.Slug = Slugefier.GetFriendlyTitle(model.Title);
+
+            }
+
+            exists.UpdatedAt = DateTime.UtcNow;//update edit time
+            await db.Blogs.SingleUpdateAsync(exists);
+            await db.SaveChangesAsync();
+
+            return mapper.Map<BlogModel>(exists);
+
+         
+        }
     }
 }

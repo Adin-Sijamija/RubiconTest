@@ -6,12 +6,13 @@ namespace RubiconTest.Infrastructure.Shared
     public static class Slugefier
     {
 
-        //Please note that API uses slug instead of IDs.Slug is a “URL friendly” version,
-        //    used instead of IDs to identify blog post.Slugs should be entirely lowercase,
-        //        with accented characters replaced by letters from the 
-        //        English alphabet and whitespace characters replaced by a 
-        //        dash or an underscore to avoid being encoded. 
-        //    Punctuation marks are generally removed.
+       /// <summary>
+       /// Static function used for creating slugs from the title property
+       /// </summary>
+       /// <param name="title">The title of the blog to be converted into a slug</param>
+       /// <param name="remapToAscii">Boolean to check if you want to change all the chars into a ASCII standard </param>
+       /// <param name="maxlength">Max range for slug cut off</param>
+       /// <returns></returns>
         public static string GetFriendlyTitle(string title, bool remapToAscii = true, int maxlength = 80)
         {
             if (title == null)

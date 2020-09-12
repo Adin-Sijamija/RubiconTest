@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RubiconTest.Infrastructure.Services.TagService;
 
 namespace RubiconTest.Controllers
 {
@@ -11,13 +12,20 @@ namespace RubiconTest.Controllers
     public class TagsController : Controller
     {
 
+        private readonly ITagService service;
+
+        public TagsController(ITagService service)
+        {
+            this.service = service;
+        }
 
         //GET /api/tags
-
         [HttpGet]
-        public IActionResult Index()
+        public async  Task<IActionResult> getTags()
         {
-            return View();
+
+            return Ok(await service.GetTags());
+
         }
     }
 }
